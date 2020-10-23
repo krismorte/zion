@@ -54,6 +54,8 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
             <version>12.2.0.1</version>
+            <scope>system</scope>
+	    <systemPath>/home/krisnamourt/extra-libs/ojdbc7.jar</systemPath>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
