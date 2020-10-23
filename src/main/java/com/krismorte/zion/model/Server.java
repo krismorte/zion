@@ -5,9 +5,13 @@
  */
 package com.krismorte.zion.model;
 
+import java.io.InputStream;
+import java.io.Reader;
+import java.math.BigDecimal;
+import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
+import java.util.*;
 
 import com.krismorte.zion.service.ConnectionFactory;
 import lombok.Getter;
@@ -81,6 +85,10 @@ public abstract class Server {
 
     public void buildResult(ResultSet set) throws Exception {
 
+        if (set == null){
+            set = new EmptyResultSet();
+        }
+
         sqlResult = new SQLResult();
         ResultSetMetaData meta = set.getMetaData();
         List<String[]> lista = new ArrayList<String[]>();
@@ -129,5 +137,6 @@ public abstract class Server {
     public String getDatabase() {
         return database== null? getDefaultDatabaseName() : database;
     }
+
 
 }

@@ -37,7 +37,9 @@ public class SQLServer extends Server {
 
             PreparedStatement cmd = con.prepareCall(command, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
             cmd.setFetchSize(Parametros.row);
-            ResultSet set = cmd.executeQuery();
+            cmd.executeUpdate();
+
+            ResultSet set = cmd.getResultSet();
 
             buildResult(set);
 
