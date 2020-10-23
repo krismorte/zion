@@ -71,7 +71,7 @@ public class MainScreen extends JPanel implements SelectServers {
         MenuModel menu = new MenuModel();
         mainFrame = new JFrame();
         //frame.setIconImage(icon);
-        mainFrame.setTitle("Zion - o substituto do Babylon!");
+        mainFrame.setTitle("Zion - sql command distributor!");
         mainFrame.addWindowListener(
                 new WindowAdapter() {
 
@@ -81,6 +81,7 @@ public class MainScreen extends JPanel implements SelectServers {
                 });
         mainFrame.getContentPane().add(new MainScreen());
         mainFrame.setJMenuBar(menu);
+        mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         mainFrame.pack();
 
     }

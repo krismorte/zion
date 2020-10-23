@@ -4,8 +4,7 @@
  */
 package com.krismorte.zion.util;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -35,6 +34,7 @@ public class Tabela extends JPanel {
     private static Dimension bounds;
     public static String[] colunas;
     public static Object[][] linhas;
+    private Font font = new Font("Impact", Font.ITALIC, 15);
 
     /**
      * Create a new instance of Tabela
@@ -44,15 +44,11 @@ public class Tabela extends JPanel {
      */
     public Tabela(String[] colunas, Object[][] linhas) {
         super(new GridLayout(1, 1));
-        //this.setSize(hori, vert);
         model = new TabelaModelo(colunas, linhas);
         Tabela.colunas = colunas;
         Tabela.linhas = linhas;
         table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-        //table.setPreferredScrollableViewportSize(new Dimension(hori, vert));
-        table.setSize(bounds);
-        table.setOpaque(false);
+        settupTableDisplay();
         scrollPane = new JScrollPane(table);
         scrollPane.setOpaque(false);
         scrollPane.setPreferredSize(bounds);
@@ -70,9 +66,7 @@ public class Tabela extends JPanel {
         Tabela.colunas = colunas;
         Tabela.linhas = linhas;
         table = new JTable(model);
-        table.setAutoCreateRowSorter(true);
-        //table.setPreferredScrollableViewportSize(new Dimension(hori, vert));
-        table.setOpaque(false);
+        settupTableDisplay();
 
         try {
             table.setDefaultRenderer(Class.forName("java.lang.String"), renderer);
@@ -97,14 +91,13 @@ public class Tabela extends JPanel {
         Tabela.colunas = colunas;
         Tabela.linhas = linhas;
         table = new JTable(model);
-        //table.setPreferredScrollableViewportSize(tam);
+        settupTableDisplay();
         try {
             table.setDefaultRenderer(Class.forName("java.lang.String"), renderer);
         } catch (ClassNotFoundException ex) {
             System.exit(0);
         }
 
-        table.setOpaque(false);
         scrollPane = new JScrollPane(table);
         scrollPane.setPreferredSize(bounds);
         scrollPane.setOpaque(false);
@@ -122,12 +115,9 @@ public class Tabela extends JPanel {
         Tabela.colunas = colunas;
         Tabela.linhas = linhas;
         table = new JTable(model);
-        scrollPane = new JScrollPane(table);
+        settupTableDisplay();
         this.setSize(bounds);
-        //scrollPane.setPreferredSize(bounds);
         scrollPane.setSize(bounds);
-        //table.setPreferredScrollableViewportSize(tam);
-        table.setOpaque(false);
         scrollPane = new JScrollPane(table);
         scrollPane.setOpaque(false);
         scrollPane.getViewport().setOpaque(false);
@@ -243,6 +233,14 @@ public class Tabela extends JPanel {
         panel.validate();
         resultados.table.setColumnSelectionAllowed(true);
         return resultados;
+    }
+
+    private void settupTableDisplay(){
+        table.setAutoCreateRowSorter(true);
+        table.setSize(bounds);
+        table.setOpaque(false);
+        table.setFont(font);
+        table.setRowHeight(27);
     }
 
     public Object[][] buscaValores(String texto) {
