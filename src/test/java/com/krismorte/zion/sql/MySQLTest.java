@@ -1,9 +1,6 @@
 package com.krismorte.zion.sql;
 
-import com.krismorte.zion.model.SQLResult;
-import com.krismorte.zion.model.Server;
-import com.krismorte.zion.model.ServerCredential;
-import com.krismorte.zion.model.SupportedDatabases;
+import com.krismorte.zion.model.*;
 import com.krismorte.zion.service.ConnectionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,6 +44,19 @@ class MySQLTest extends DefaultOperationTest{
         assertNotNull(sqlResult.coluna);
         assertEquals(2,sqlResult.linhas.length);
 
+    }
+
+    @Test
+    void createRemoveUser() throws Exception{
+        mySQL =  new MySQL(connectionFactory,serverCredential);
+        SQLResult sqlResult = mySQL.runCommand("create user "+userTest+" identified by '45jk45uiJ'");
+        sqlResult = mySQL.runCommand("SELECT count(1) FROM mysql.user where user ='"+userTest+"'");
+        assertEquals("1",sqlResult.linhas[0][0]);
+
+
+        sqlResult = mySQL.runCommand("drop user "+userTest);
+        sqlResult = mySQL.runCommand("SELECT count(1) FROM mysql.user where user ='"+userTest+"'");
+        assertEquals("0",sqlResult.linhas[0][0]);
     }
 
     @Test

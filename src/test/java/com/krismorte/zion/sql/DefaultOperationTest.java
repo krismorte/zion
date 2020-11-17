@@ -9,6 +9,8 @@ import java.sql.Statement;
  */
 public class DefaultOperationTest {
 
+    String userTest = "user_test";
+
     public String getSingleResult(Connection connection,String command) throws Exception{
         Statement statement = connection.createStatement();
         statement.execute(command);

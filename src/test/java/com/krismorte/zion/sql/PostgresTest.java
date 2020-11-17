@@ -53,6 +53,19 @@ class PostgresTest extends DefaultOperationTest{
     }
 
     @Test
+    void createRemoveUser() throws Exception{
+        postgreSQL =  new Postgres(connectionFactory,serverCredential);
+        SQLResult sqlResult = postgreSQL.runCommand("create role "+userTest+" with login password '45jk45uiJ'");
+        sqlResult = postgreSQL.runCommand("SELECT count(1) FROM pg_catalog.pg_user where usename ='"+userTest+"'");
+        assertEquals("1",sqlResult.linhas[0][0]);
+
+
+        sqlResult = postgreSQL.runCommand("drop role "+userTest);
+        sqlResult = postgreSQL.runCommand("SELECT count(1) FROM pg_catalog.pg_user where usename ='"+userTest+"'");
+        assertEquals("0",sqlResult.linhas[0][0]);
+    }
+
+    @Test
     void getJdbcConnection() throws Exception{
         postgreSQL =  new Postgres(connectionFactory,serverCredential);
         assertNotNull(postgreSQL.getJdbcConnection());

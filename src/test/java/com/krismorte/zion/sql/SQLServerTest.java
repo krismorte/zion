@@ -56,6 +56,19 @@ class SQLServerTest extends DefaultOperationTest{
     }
 
     @Test
+    void createRemoveUser() throws Exception{
+        sqlServer =  new SQLServer(connectionFactory,serverCredential);
+        SQLResult sqlResult = sqlServer.runCommand("create login "+userTest+" with password ='45jk45uiJ'");
+        sqlResult = sqlServer.runCommand("SELECT count(1) FROM master..syslogins where name ='"+userTest+"'");
+        assertEquals("1",sqlResult.linhas[0][0]);
+
+
+        sqlResult = sqlServer.runCommand("drop login "+userTest);
+        sqlResult = sqlServer.runCommand("SELECT count(1) FROM master..syslogins where name ='"+userTest+"'");
+        assertEquals("0",sqlResult.linhas[0][0]);
+    }
+
+    @Test
     void getJdbcConnection() throws Exception{
         sqlServer =  new SQLServer(connectionFactory,serverCredential);
         assertNotNull(sqlServer.getJdbcConnection());
