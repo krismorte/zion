@@ -26,8 +26,10 @@ import com.krismorte.zion.util.LimpaCampos;
 import com.krismorte.zion.view.repository.ServerRepositoryFileImpl;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 
 import com.krismorte.zion.view.service.ConnectionFactoryImpl;
+import com.krismorte.zion.view.threads.SingleExecutionThread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,12 +68,6 @@ public class CadastroDeServidor extends javax.swing.JDialog implements Internati
         this.modelTree = modelTree;
         this.setTitle(String.format(getStringI18n("TITLE_ADD_SERVER"), node.toString()));
         initTypes();
-        /*
-         buyspeed-mass-uat.clomti7y1pik.us-west-2.rds.amazonaws.com
-         sc7ipxWW596Qf96E2Wdg
-         buyspeed-phi-sales-demo.cxpmkob3qasn.us-west-2.rds.amazonaws.com
-         it4P0EGPU7tDv3942n15
-         */
     }
 
     private void initTypes() {
@@ -272,7 +268,8 @@ public class CadastroDeServidor extends javax.swing.JDialog implements Internati
             }
             enableSalve(true);
         } catch (Exception e) {
-            e.printStackTrace();
+            java.util.logging.Logger.getLogger(SingleExecutionThread.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(this, e.getMessage(),"error", JOptionPane.ERROR_MESSAGE);
             JOptionPane.showMessageDialog(this, getStringI18n("USE_SYSADMIN_MSG"), getStringI18n("CONNECTION_ERROR"), JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnTestarActionPerformed
