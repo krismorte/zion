@@ -19,7 +19,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeListener;
-import com.krismorte.zion.model.Parametros;
+import com.krismorte.zion.model.ZionParameters;
 import com.krismorte.zion.model.Server;
 import com.krismorte.zion.service.ExportSQLResult;
 import com.krismorte.zion.view.service.ExportSQLResultCsvImpl;
@@ -128,13 +128,13 @@ public class operationPanel extends javax.swing.JPanel implements Internationali
     private void habilitaCheckBox(int tela) {
         if (tela == 0) {
             radAbas.setEnabled(true);
-            if (Parametros.tabResult == 1) {
+            if (ZionParameters.tabResult == 1) {
                 radAbas.setSelected(true);
             }
-            if (Parametros.tabGridStatus == 1) {
+            if (ZionParameters.tabGridStatus == 1) {
                 radGridStatus.setSelected(true);
             }
-            if (Parametros.tabGridCross == 1) {
+            if (ZionParameters.tabGridCross == 1) {
                 radGridCruzado.setSelected(true);
             }
         } else {
@@ -370,7 +370,7 @@ public class operationPanel extends javax.swing.JPanel implements Internationali
             JOptionPane.showMessageDialog(this, getStringI18n("TYPE_SCRIPT_MSG"));
             
         } else if (!panelScript.verificaParalelismo()) {
-            JOptionPane.showMessageDialog(null, Parametros.errorMessageParallelism, getStringI18n("INVALID_PARALLELISM"), JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, ZionParameters.errorMessageParallelism, getStringI18n("INVALID_PARALLELISM"), JOptionPane.ERROR_MESSAGE);
         } else {
             selectedServers = iSelectedServers.getServers();
             if (selectedServers.size() == 0) {

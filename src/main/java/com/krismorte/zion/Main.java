@@ -5,11 +5,9 @@
 package com.krismorte.zion;
 
 import com.alee.laf.WebLookAndFeel;
-import java.util.Locale;
-import java.util.Properties;
-import java.util.ResourceBundle;
+
 import javax.swing.SwingUtilities;
-import com.krismorte.zion.model.Parametros;
+import com.krismorte.zion.model.ZionParameters;
 import com.krismorte.zion.view.MainScreen;
 
 /**
@@ -42,7 +40,7 @@ public class Main {
                 // JFrame frame = ...
                 // You can also use Web* components to get access to some extended WebLaF features
                 // WebFrame frame = ...
-                Parametros.getParameters();
+                ZionParameters.getParameters();
                 MainScreen.main(null);
             }
         });

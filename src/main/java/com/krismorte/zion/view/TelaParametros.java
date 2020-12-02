@@ -10,7 +10,7 @@
  */
 package com.krismorte.zion.view;
 
-import com.krismorte.zion.model.Parametros;
+import com.krismorte.zion.model.ZionParameters;
 import com.krismorte.zion.util.Tabela;
 
 /**
@@ -24,7 +24,7 @@ public class TelaParametros extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setTitle("Configuracao de Parametros");
-        Tabela.preencheTabela(panelResultados, Parametros.colunas, Parametros.linhas);
+        Tabela.preencheTabela(panelResultados, ZionParameters.columns, ZionParameters.rows);
     }
 
     /** This method is called from within the constructor to

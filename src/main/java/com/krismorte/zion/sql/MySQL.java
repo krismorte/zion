@@ -31,7 +31,7 @@ public class MySQL extends Server {
             Connection con = getJdbcConnection();
 
             PreparedStatement cmd = con.prepareCall(command, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            cmd.setFetchSize(Parametros.row);
+            cmd.setFetchSize(ZionParameters.row);
             if (command.trim().toLowerCase().startsWith("select")){
 
                 cmd.executeQuery();

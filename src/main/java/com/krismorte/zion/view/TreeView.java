@@ -7,7 +7,6 @@ package com.krismorte.zion.view;
 
 import com.krismorte.zion.model.Group;
 import com.krismorte.zion.model.Server;
-import com.krismorte.zion.repository.ServerRepository;
 import com.krismorte.zion.service.GroupService;
 import com.krismorte.zion.service.GroupServiceImpl;
 import com.krismorte.zion.service.ServerService;
@@ -15,7 +14,6 @@ import com.krismorte.zion.service.ServerServiceImpl;
 import com.krismorte.zion.view.repository.GroupRepositoryFileImpl;
 import com.krismorte.zion.view.repository.ServerRepositoryFileImpl;
 import com.krismorte.zion.view.util.CheckTreeManager;
-import jdk.nashorn.internal.scripts.JO;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +22,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
@@ -45,19 +42,19 @@ public class TreeView implements InternationalizedUI {
     private JTree tree;
     private DefaultTreeModel modelTree;
     private CheckTreeManager checkTreeManager;
-    private JPopupMenu menuFlutuantePasta = new JPopupMenu();
-    private JPopupMenu menuFlutuanteArquivo = new JPopupMenu();
-    private JMenuItem itemAddGrupo;
+    private JPopupMenu popupMenuFolder = new JPopupMenu();
+    private JPopupMenu popupMenuFile = new JPopupMenu();
+    private JMenuItem itemAddGroup;
     private JMenuItem itemRefresh;
-    private JMenuItem itemRenomearGrupo;
-    private JMenuItem itemRemoverGrupo;
-    private JMenuItem itemAddServidor;
-    private JMenuItem itemRemoverServidor;
+    private JMenuItem itemRenameGroup;
+    private JMenuItem itemRemoveGroup;
+    private JMenuItem itemAddServer;
+    private JMenuItem itemRemoveServer;
     private GroupService groupServiceImpl = new GroupServiceImpl(new GroupRepositoryFileImpl());
    private ServerService serverService = new ServerServiceImpl(new ServerRepositoryFileImpl());
 
     public TreeView() {
-        iniciaMenuFlutuante();
+        initPopupMenu();
         root = new DefaultMutableTreeNode(getStringI18n("SERVERS"));
         mountTree(root);
     }
@@ -83,21 +80,21 @@ public class TreeView implements InternationalizedUI {
                     tree.setSelectionRow(row);
                     DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
                     if (node.isRoot()) {
-                        itemAddServidor.setEnabled(false);
-                        itemRemoverGrupo.setEnabled(false);
-                        itemAddGrupo.setEnabled(true);
+                        itemAddServer.setEnabled(false);
+                        itemRemoveGroup.setEnabled(false);
+                        itemAddGroup.setEnabled(true);
                         itemRefresh.setEnabled(true);
-                        menuFlutuantePasta.show((JComponent) e.getSource(),
+                        popupMenuFolder.show((JComponent) e.getSource(),
                                 e.getX(), e.getY());
                     } else if (node.getUserObject() instanceof Server) {
-                        menuFlutuanteArquivo.show((JComponent) e.getSource(),
+                        popupMenuFile.show((JComponent) e.getSource(),
                                 e.getX(), e.getY());
                     } else {
-                        itemAddServidor.setEnabled(true);
-                        itemRemoverGrupo.setEnabled(true);
-                        itemAddGrupo.setEnabled(false);
+                        itemAddServer.setEnabled(true);
+                        itemRemoveGroup.setEnabled(true);
+                        itemAddGroup.setEnabled(false);
                         itemRefresh.setEnabled(false);
-                        menuFlutuantePasta.show((JComponent) e.getSource(),
+                        popupMenuFolder.show((JComponent) e.getSource(),
                                 e.getX(), e.getY());
                     }
                 }
@@ -120,26 +117,26 @@ public class TreeView implements InternationalizedUI {
 
     }
 
-    private void iniciaMenuFlutuante() {
-        itemAddGrupo = new JMenuItem(getStringI18n("ADD_GROUP"));
-        itemRenomearGrupo = new JMenuItem(getStringI18n("RENAME_GROUP"));
-        itemRemoverGrupo = new JMenuItem(getStringI18n("REMOVE_GROUP"));
+    private void initPopupMenu() {
+        itemAddGroup = new JMenuItem(getStringI18n("ADD_GROUP"));
+        itemRenameGroup = new JMenuItem(getStringI18n("RENAME_GROUP"));
+        itemRemoveGroup = new JMenuItem(getStringI18n("REMOVE_GROUP"));
         itemRefresh = new JMenuItem(getStringI18n("REFRESH"));
-        itemAddServidor = new JMenuItem(getStringI18n("ADD_SERVER"));
-        itemRemoverServidor = new JMenuItem(getStringI18n("REMOVE_SERVER"));
-        itemAddGrupo.addActionListener(new EventosJMenuItem());
-        itemAddServidor.addActionListener(new EventosJMenuItem());
-        itemRenomearGrupo.addActionListener(new EventosJMenuItem());
-        itemRemoverGrupo.addActionListener(new EventosJMenuItem());
-        itemRemoverServidor.addActionListener(new EventosJMenuItem());
-        itemRefresh.addActionListener(new EventosJMenuItem());
+        itemAddServer = new JMenuItem(getStringI18n("ADD_SERVER"));
+        itemRemoveServer = new JMenuItem(getStringI18n("REMOVE_SERVER"));
+        itemAddGroup.addActionListener(new JMenuItemEvent());
+        itemAddServer.addActionListener(new JMenuItemEvent());
+        itemRenameGroup.addActionListener(new JMenuItemEvent());
+        itemRemoveGroup.addActionListener(new JMenuItemEvent());
+        itemRemoveServer.addActionListener(new JMenuItemEvent());
+        itemRefresh.addActionListener(new JMenuItemEvent());
 
-        menuFlutuantePasta.add(itemAddGrupo);
-        menuFlutuantePasta.add(itemAddServidor);
-        menuFlutuantePasta.add(itemRenomearGrupo);
-        menuFlutuantePasta.add(itemRemoverGrupo);
-        menuFlutuantePasta.add(itemRefresh);
-        menuFlutuanteArquivo.add(itemRemoverServidor);
+        popupMenuFolder.add(itemAddGroup);
+        popupMenuFolder.add(itemAddServer);
+        popupMenuFolder.add(itemRenameGroup);
+        popupMenuFolder.add(itemRemoveGroup);
+        popupMenuFolder.add(itemRefresh);
+        popupMenuFile.add(itemRemoveServer);
 
     }
 
@@ -148,19 +145,19 @@ public class TreeView implements InternationalizedUI {
         return resourceBundle.getString(key);
     }
 
-    public class EventosJMenuItem implements ActionListener {
+    public class JMenuItemEvent implements ActionListener {
 
         public void actionPerformed(ActionEvent e) {
 
-            if (e.getActionCommand().equals(itemAddGrupo.getText())) {
+            if (e.getActionCommand().equals(itemAddGroup.getText())) {
                 newGroup();
-            } else if (e.getActionCommand().equals(itemAddServidor.getText())) {
+            } else if (e.getActionCommand().equals(itemAddServer.getText())) {
                 newServer();
-            } else if (e.getActionCommand().equals(itemRenomearGrupo.getText())) {
+            } else if (e.getActionCommand().equals(itemRenameGroup.getText())) {
                 renameGroup();
-            } else if (e.getActionCommand().equals(itemRemoverGrupo.getText())) {
+            } else if (e.getActionCommand().equals(itemRemoveGroup.getText())) {
                 removeGroup();
-            } else if (e.getActionCommand().equals(itemRemoverServidor.getText())) {
+            } else if (e.getActionCommand().equals(itemRemoveServer.getText())) {
                 removeServer();
             } else if (e.getActionCommand().equals(itemRefresh.getText())) {
                 modelTree.reload();
@@ -184,17 +181,15 @@ public class TreeView implements InternationalizedUI {
     }
 
     public void newGroup() {
-        String novoNome = JOptionPane.showInputDialog(null, getStringI18n("TYPE_NAME"), getStringI18n("ADD_GROUP"), JOptionPane.INFORMATION_MESSAGE);
-        if (novoNome == null || novoNome.equals("")) {
+        String newName = JOptionPane.showInputDialog(null, getStringI18n("TYPE_NAME"), getStringI18n("ADD_GROUP"), JOptionPane.INFORMATION_MESSAGE);
+        if (newName == null || newName.equals("")) {
             JOptionPane.showMessageDialog(null, getStringI18n("MANDATORY_VALUE"));
         } else {
             try {
-                groupServiceImpl.create(new Group(novoNome));
-                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(novoNome);
+                groupServiceImpl.create(new Group(newName));
+                DefaultMutableTreeNode newNode = new DefaultMutableTreeNode(newName);
                 modelTree.insertNodeInto(newNode, (DefaultMutableTreeNode) tree.getModel().getRoot(), 0);
-                //listaGrupos.add(novoNome);
                 checkTreeManager.clearSelections();
-                //logger.info("Grupo " + newNode.toString() + " adicionado com sucesso");
             } catch (Exception ex) {
                  JOptionPane.showMessageDialog(null, ex.getMessage());
                 //logger.error(ex.getMessage());

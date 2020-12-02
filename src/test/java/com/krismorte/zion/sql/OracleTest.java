@@ -7,13 +7,16 @@ import com.krismorte.zion.model.SupportedDatabases;
 import com.krismorte.zion.service.ConnectionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.OracleContainer;
+import org.testcontainers.containers.wait.strategy.Wait;
+import org.testcontainers.containers.wait.strategy.WaitStrategy;
+import org.testcontainers.containers.wait.strategy.WaitStrategyTarget;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,8 +24,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class OracleTest extends DefaultOperationTest{
 
     @Container
-    private static final OracleContainer oracleContainer = new OracleContainer("wnameless/oracle-xe-11g-r2")
-            .withUsername("system")
+    private static final OracleContainer oracleContainer = new OracleContainer("oracle/database:18.4.0-xe")
+            .withEnv("ORACLE_PWD","oracle")
+            .withUsername("SYS")
             .withPassword("oracle");
     ServerCredential serverCredential;
     ConnectionFactory connectionFactory;
@@ -30,7 +34,9 @@ class OracleTest extends DefaultOperationTest{
 
     @BeforeEach
     void setUp() throws Exception{
+        Wait Wait = new Wait();
         oracleContainer.addExposedPort(1521);
+        oracleContainer.waitingFor(Wait.forLogMessage("Completing Database Creation",1));
         connectionFactory = new ConnectionFactory() {
             @Override
             public Connection open(Server server) throws Exception {

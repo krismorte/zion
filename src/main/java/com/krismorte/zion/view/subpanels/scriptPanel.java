@@ -4,7 +4,7 @@
  */
 package com.krismorte.zion.view.subpanels;
 
-import com.krismorte.zion.model.Parametros;
+import com.krismorte.zion.model.ZionParameters;
 import com.krismorte.zion.view.operationPanel;
 
 /**
@@ -24,15 +24,15 @@ public class scriptPanel extends javax.swing.JPanel{
     public scriptPanel(operationPanel panel) {
         //initComponents();
         this.panel = panel;
-        panel.setParallelism("" + Parametros.parallelism);
+        panel.setParallelism("" + ZionParameters.parallelism);
     }
 
     public boolean verificaParalelismo() {
         try {
             int par = Integer.parseInt(panel.getParallelism());
-            return Parametros.isValidParallelismValue(par);
+            return ZionParameters.isValidParallelismValue(par);
         } catch (NumberFormatException e) {
-            panel.setParallelism("" + Parametros.parallelism);
+            panel.setParallelism("" + ZionParameters.parallelism);
             return false;
         }
     }

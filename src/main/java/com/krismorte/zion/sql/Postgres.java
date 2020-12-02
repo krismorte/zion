@@ -36,7 +36,7 @@ public class Postgres extends Server {
             Connection con = getJdbcConnection();
 
             PreparedStatement cmd = con.prepareCall(command, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
-            cmd.setFetchSize(Parametros.row);
+            cmd.setFetchSize(ZionParameters.row);
             ResultSet set = cmd.executeQuery();
 
             buildResult(set);
