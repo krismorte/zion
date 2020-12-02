@@ -19,14 +19,9 @@ public class ScriptDao {
 
     public boolean insert(Script script, String dir) {
         try {
-            /*String dirTipo = verificaExistenciaSubDiretorio(DIRETORIO, getTipo());
-             String dirGrupo = "";
-             if (!(getGrupo().equals(""))) {//grupo pode ser vazio
-             dirGrupo = verificaExistenciaSubDiretorio(DIRETORIO + "\\" + getTipo(), getGrupo());
-             }*/
+
             FileWriter w = new FileWriter(dir + script.getNome(), false);
 
-            //System.out.println(xStream.toXML(pessoa));
             w.write(script.getTexto());
             w.flush();
             w.close();
@@ -43,7 +38,7 @@ public class ScriptDao {
         List<Script> listaArquivos = new ArrayList<Script>();
         File dirr = new File(dir);
         String tipo = dirr.getName();
-        preencheListaDeArquivos(listaArquivos, dirr, tipo);
+        fullfillScripts(listaArquivos, dirr, tipo);
         if (listaArquivos.size() <= 0) {
             //Main.logApp.addMsgLog(ScriptDao.class.getCanonicalName(), "Error");
         }
@@ -51,20 +46,19 @@ public class ScriptDao {
 
     }
 
-    private boolean preencheListaDeArquivos(List<Script> listaArquivos, File diretorio, String tipo) {
-        //System.out.println("1 " + diretorio.getAbsolutePath());
-        if (diretorio.isDirectory()) {
-            String[] children = diretorio.list();
+    private boolean fullfillScripts(List<Script> filesList, File dir, String type) {
+
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
             for (int i = 0; i < children.length; i++) {
                 if (children[i].endsWith(".sql")) {
-                    //System.out.println("2 " + children[i]);
-                    String grupo = "";//Identifica se pasta é de tipo ou grupo
-                    if (!diretorio.getName().toUpperCase().equals(tipo.toUpperCase())) {
-                        grupo = diretorio.getName();
+                    String group = "";
+                    if (!dir.getName().toUpperCase().equals(type.toUpperCase())) {
+                        group = dir.getName();
                     }
-                    listaArquivos.add(new Script(children[i], tipo, grupo, ""));
-                } else if (new File(diretorio.getAbsolutePath() + "\\" + children[i]).isDirectory()) {
-                    boolean success = preencheListaDeArquivos(listaArquivos, new File(diretorio.getAbsolutePath() + "\\" + children[i]), tipo);
+                    filesList.add(new Script(children[i], type, group, ""));
+                } else if (new File(dir.getAbsolutePath() + "\\" + children[i]).isDirectory()) {
+                    boolean success = fullfillScripts(filesList, new File(dir.getAbsolutePath() + "\\" + children[i]), type);
                     if (!success) {
                         return false;
                     }
