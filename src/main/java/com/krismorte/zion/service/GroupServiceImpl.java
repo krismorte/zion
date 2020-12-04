@@ -7,15 +7,20 @@ package com.krismorte.zion.service;
 
 import com.krismorte.zion.model.Group;
 import com.krismorte.zion.repository.GroupRepository;
+import com.krismorte.zion.view.InternationalizedUI;
+
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
  *
  * @author krismorte <krisnamourt_ti@hotmail.com>
  */
-public class GroupServiceImpl implements GroupService {
+public class GroupServiceImpl implements GroupService, InternationalizedUI {
 
     private GroupRepository groupRepository;
+    private ResourceBundle resourceBundle = ResourceBundle.getBundle("SystemMessages", Locale.getDefault());
 
     public GroupServiceImpl(GroupRepository groupRepository) {
         this.groupRepository = groupRepository;
@@ -26,7 +31,7 @@ public class GroupServiceImpl implements GroupService {
         if (!groupRepository.exists(group)) {
             return groupRepository.add(group);
         }
-        throw new Exception("Group already exists!");
+        throw new Exception(getStringI18n("MSG_GRP_EXISTS"));
     }
 
     @Override
@@ -39,7 +44,7 @@ public class GroupServiceImpl implements GroupService {
         if (!groupRepository.exists(new Group(newName))) {
             return groupRepository.rename(group, newName);
         }
-        throw new Exception("Group already exists!");
+        throw new Exception(getStringI18n("MSG_GRP_EXISTS"));
     }
 
     @Override
@@ -48,7 +53,12 @@ public class GroupServiceImpl implements GroupService {
             groupRepository.remove(group);
             return;
         }
-        throw new Exception("Remove all servers from the group first!");
+        throw new Exception(getStringI18n("RM_ALL_SERVER"));
+    }
+
+    @Override
+    public String getStringI18n(String key) {
+        return resourceBundle.getString(key);
     }
 
 }
