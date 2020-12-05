@@ -22,7 +22,7 @@ public class EditorSQL extends JTextPane {
 
     private static final long serialVersionUID = 1L;
     private String[] biblioteca = new String[]{"algoritmo", "caracter", "caso", "de", "dec1", "enquanto", "entao", "escolha", "escreva", "escrevaln", "faca", "fim", "fimcaso", "fimenquanto", "fimescolha", "fimfuncao", "fimpara", "fimprocedimento", "fimse", "funcao", "inicio", "inteiro", "leia", "literal", "para", "procedimento", "real", "repita", "se", "senao", "variaveis"};
-    private List<Biblioteca> library = new ArrayList<Biblioteca>();
+    private List<SQLLibrary> library = new ArrayList<SQLLibrary>();
 
     public EditorSQL() {
         setDocument(doc);
@@ -31,7 +31,7 @@ public class EditorSQL extends JTextPane {
         library.add(new Biblioteca(tes, Color.BLUE));*/
     }
 
-    public EditorSQL(List<Biblioteca> library) {
+    public EditorSQL(List<SQLLibrary> library) {
         this.library = library;
         setDocument(doc);
     }
@@ -51,10 +51,10 @@ public class EditorSQL extends JTextPane {
 
             while (wordR <= after) {
                 if (wordR == after || String.valueOf(text.charAt(wordR)).matches("\\W")) {
-                    for (Biblioteca b : library) {
+                    for (SQLLibrary b : library) {
                         // if (text.substring(wordL, wordR).matches("(\\W)*(private|public|protected)")) {
                         if (text.substring(wordL, wordR).toUpperCase().matches("(\\W)*(" + b.toStringRegexSearch() + ")")) {
-                            setCharacterAttributes(wordL+1, wordR - wordL, getAtrib(b.getCor()), false);
+                            setCharacterAttributes(wordL+1, wordR - wordL, getAtrib(b.getColor()), false);
                             break;
                         } else {
                             setCharacterAttributes(wordL+1, wordR - wordL, getAtrib(Color.black), false);
@@ -75,9 +75,9 @@ public class EditorSQL extends JTextPane {
                 before = 0;
             }
             int after = findFirstNonWordChar(text, offs);
-            for (Biblioteca b : library) {
+            for (SQLLibrary b : library) {
                 if (text.substring(before, after).toUpperCase().matches("(\\W)*(" + b.toStringRegexSearch() + ")")) {
-                    setCharacterAttributes(before+1, after - before, getAtrib(b.getCor()), false);
+                    setCharacterAttributes(before+1, after - before, getAtrib(b.getColor()), false);
                 } else {
                     setCharacterAttributes(before+1, after - before, getAtrib(Color.black), false);
                 }
@@ -113,23 +113,23 @@ public class EditorSQL extends JTextPane {
     /**
      * @return the library
      */
-    public List<Biblioteca> getLibrary() {
+    public List<SQLLibrary> getLibrary() {
         return library;
     }
 
     /**
      * @param library the library to set
      */
-    public void setLibrary(List<Biblioteca> library) {
+    public void setLibrary(List<SQLLibrary> library) {
         this.library = library;
     }
 
     /**
      * @param library the library to set
      */
-    public void setLibrary(Biblioteca library) {
+    public void setLibrary(SQLLibrary library) {
         if (this.library == null) {
-            this.library = new ArrayList<Biblioteca>();
+            this.library = new ArrayList<SQLLibrary>();
         }
         this.library.add(library);
     }

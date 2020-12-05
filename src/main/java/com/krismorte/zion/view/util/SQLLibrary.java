@@ -14,23 +14,23 @@ import lombok.Setter;
  */
 @Getter 
 @Setter
-public class Biblioteca {
+public class SQLLibrary {
 
-    private String[] palavrasReservadas;
-    private Color cor;
+    private String[] reservedWords;
+    private Color color;
 
-    public Biblioteca(String[] _palavrasReservadas, Color _cor) {
-        palavrasReservadas = _palavrasReservadas;
-        cor = _cor;
+    public SQLLibrary(String[] _reservedWords, Color _color) {
+        reservedWords = _reservedWords;
+        color = _color;
     }
 
     public String toStringRegexSearch() {
         String regexOr = "";
-        for (int i = 0; i < palavrasReservadas.length; i++) {
+        for (int i = 0; i < reservedWords.length; i++) {
             if (i == 0) {
-                regexOr = palavrasReservadas[i];
+                regexOr = reservedWords[i];
             } else {
-                regexOr += "|" + palavrasReservadas[i];
+                regexOr += "|" + reservedWords[i];
             }
         }
         return regexOr;

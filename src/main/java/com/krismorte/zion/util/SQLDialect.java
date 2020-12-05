@@ -4,7 +4,7 @@
  */
 package com.krismorte.zion.util;
 
-import com.krismorte.zion.view.util.Biblioteca;
+import com.krismorte.zion.view.util.SQLLibrary;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,11 @@ public class SQLDialect {
     public static String[] OPERATIONS_SYNTAX_MSSQL = {"ALL", "AND", "ANY", "BETWEEN", "RIGHT", "IN", "INNER", "IS", "JOIN", "LIKE", "SOME", "LEFT", "CROSS", "NOT", "NULL", "UNPIVOT", "OR", "OUTER", "PIVOT", "EXISTS"};
     public static String[] FUNCTIONS_SYNTAX_MSSQL = {"COALESCE", "SESSION_USER", "CONVERT", "SYSTEM_USER", "CURRENT_TIMESTAMP", "CURRENT_USER", "NULLIF", "USER","SERVERNAME","VERSION","DB_NAME"};
 
-    public static List<Biblioteca> getDialectMSSQL() {
-        List<Biblioteca> lst = new ArrayList<Biblioteca>();
-        lst.add(new Biblioteca(SQLDialect.COMMANDS_SYNTAX_MSSQL, Color.blue));
-        lst.add(new Biblioteca(SQLDialect.OPERATIONS_SYNTAX_MSSQL, Color.gray));
-        lst.add(new Biblioteca(SQLDialect.FUNCTIONS_SYNTAX_MSSQL, Color.red));
+    public static List<SQLLibrary> getDialectMSSQL() {
+        List<SQLLibrary> lst = new ArrayList<SQLLibrary>();
+        lst.add(new SQLLibrary(SQLDialect.COMMANDS_SYNTAX_MSSQL, Color.blue));
+        lst.add(new SQLLibrary(SQLDialect.OPERATIONS_SYNTAX_MSSQL, Color.gray));
+        lst.add(new SQLLibrary(SQLDialect.FUNCTIONS_SYNTAX_MSSQL, Color.red));
         return lst;
     }
 
