@@ -9,14 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.OracleContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
-import org.testcontainers.containers.wait.strategy.WaitStrategy;
-import org.testcontainers.containers.wait.strategy.WaitStrategyTarget;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,11 +49,11 @@ class OracleTest extends DefaultOperationTest{
     void runCommand() throws Exception{
         oracle =  new Oracle(connectionFactory,serverCredential);
         SQLResult sqlResult = oracle.runCommand("selet 1");
-        assertNull(sqlResult.coluna);
-        assertNotNull(sqlResult.sqlErro);
+        assertNull(sqlResult.columns);
+        assertNotNull(sqlResult.sqlError);
         sqlResult = oracle.runCommand("SELECT USERNAME FROM ALL_USERS  WHERE  USERNAME IN ('SYS','SYSTEM')");
-        assertNotNull(sqlResult.coluna);
-        assertEquals(2,sqlResult.linhas.length);
+        assertNotNull(sqlResult.columns);
+        assertEquals(2,sqlResult.rows.length);
 
     }
 

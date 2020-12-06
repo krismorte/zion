@@ -449,7 +449,7 @@ public class operationPanel extends javax.swing.JPanel implements Internationali
     }
     
     public void exibeResultado(Server srv) {
-        if (srv.getSqlResult().sqlErro != null) {//  ERRO!
+        if (srv.getSqlResult().sqlError != null) {//  ERRO!
             panelScript.atualizaContadorNegativo();
         } else {
             panelScript.atualizaContadorPositivo();
@@ -477,12 +477,12 @@ public class operationPanel extends javax.swing.JPanel implements Internationali
     
     private void exibeResultadoPorAba(Server srv) {
         if (srv.getSqlResult() != null) {
-            if (srv.getSqlResult().sqlErro != null) {//  ERRO!
+            if (srv.getSqlResult().sqlError != null) {//  ERRO!
 
                 tabResultados.addTab(srv.getHost() + "!", null, new resultPanel(Arrays.asList(srv), resultPanel.INDIVIDUAL_GRID), "0");
                 tabResultados.setForegroundAt(tabResultados.getTabCount() - 1, Color.red);
             } else {
-                tabResultados.addTab(srv.getHost(), null, new resultPanel(Arrays.asList(srv), resultPanel.INDIVIDUAL_GRID), getStringI18n("TOTAL_LINES") + srv.getSqlResult().linhas.length);
+                tabResultados.addTab(srv.getHost(), null, new resultPanel(Arrays.asList(srv), resultPanel.INDIVIDUAL_GRID), getStringI18n("TOTAL_LINES") + srv.getSqlResult().rows.length);
             }
         }
     }

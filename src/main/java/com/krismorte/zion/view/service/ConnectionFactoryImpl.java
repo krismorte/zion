@@ -19,7 +19,7 @@ import java.sql.PreparedStatement;
  */
 public class ConnectionFactoryImpl implements ConnectionFactory {
 
-    public static int TIPO_CONEXAO;
+    public static int CONNECTION_TYPE;
 
     public static String ERROR_MSG;
     private static final String DRIVEMSSQL = "com.microsoft.sqlserver.jdbc.SQLServerDriver";

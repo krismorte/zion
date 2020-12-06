@@ -5,10 +5,6 @@ import com.krismorte.zion.model.Server;
 import com.krismorte.zion.model.ServerCredential;
 import com.krismorte.zion.model.SupportedDatabases;
 import com.krismorte.zion.service.ConnectionFactory;
-import com.krismorte.zion.view.service.ConnectionFactoryImpl;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testcontainers.containers.MSSQLServerContainer;
@@ -17,8 +13,6 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 @Testcontainers
@@ -48,11 +42,11 @@ class SQLServerTest extends DefaultOperationTest{
     void runCommand() throws Exception{
         sqlServer =  new SQLServer(connectionFactory,serverCredential);
         SQLResult sqlResult = sqlServer.runCommand("selet 1");
-        assertNull(sqlResult.coluna);
-        assertNotNull(sqlResult.sqlErro);
+        assertNull(sqlResult.columns);
+        assertNotNull(sqlResult.sqlError);
         sqlResult = sqlServer.runCommand("select name from sysdatabases where name in ('master','model')");
-        assertNotNull(sqlResult.coluna);
-        assertEquals(2,sqlResult.linhas.length);
+        assertNotNull(sqlResult.columns);
+        assertEquals(2,sqlResult.rows.length);
     }
 
     @Test
@@ -60,12 +54,12 @@ class SQLServerTest extends DefaultOperationTest{
         sqlServer =  new SQLServer(connectionFactory,serverCredential);
         SQLResult sqlResult = sqlServer.runCommand("create login "+userTest+" with password ='45jk45uiJ'");
         sqlResult = sqlServer.runCommand("SELECT count(1) FROM master..syslogins where name ='"+userTest+"'");
-        assertEquals("1",sqlResult.linhas[0][0]);
+        assertEquals("1",sqlResult.rows[0][0]);
 
 
         sqlResult = sqlServer.runCommand("drop login "+userTest);
         sqlResult = sqlServer.runCommand("SELECT count(1) FROM master..syslogins where name ='"+userTest+"'");
-        assertEquals("0",sqlResult.linhas[0][0]);
+        assertEquals("0",sqlResult.rows[0][0]);
     }
 
     @Test

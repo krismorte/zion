@@ -5,12 +5,7 @@
  */
 package com.krismorte.zion.model;
 
-import java.io.InputStream;
-import java.io.Reader;
-import java.math.BigDecimal;
-import java.net.URL;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import com.krismorte.zion.service.ConnectionFactory;
@@ -106,20 +101,20 @@ public abstract class Server {
 
         }
 
-        sqlResult.coluna = new String[meta.getColumnCount()];
-        sqlResult.linhas = new Object[lista.size()][sqlResult.coluna.length];
-        for (int i = 1; i <= sqlResult.coluna.length; i++) {
+        sqlResult.columns = new String[meta.getColumnCount()];
+        sqlResult.rows = new Object[lista.size()][sqlResult.columns.length];
+        for (int i = 1; i <= sqlResult.columns.length; i++) {
             if (meta.getColumnName(i).equals("")) {
-                sqlResult.coluna[i - 1] = "(Sem nome)";
+                sqlResult.columns[i - 1] = "(Sem nome)";
             } else {
-                sqlResult.coluna[i - 1] = meta.getColumnName(i);
+                sqlResult.columns[i - 1] = meta.getColumnName(i);
             }
         }
 
         int linha = 0;
         for (String[] s : lista) {
-            for (int i = 1; i <= sqlResult.coluna.length; i++) {
-                sqlResult.linhas[linha][i - 1] = s[i - 1];
+            for (int i = 1; i <= sqlResult.columns.length; i++) {
+                sqlResult.rows[linha][i - 1] = s[i - 1];
             }
             linha++;
         }
@@ -128,10 +123,10 @@ public abstract class Server {
     public void buildError(SQLException e) {
         sqlResult = new SQLResult();
         SQLError erro = new SQLError();
-        erro.codigoErro = e.getErrorCode();
-        erro.estadoErro = e.getSQLState();
-        erro.msgErro = e.getMessage();
-        sqlResult.sqlErro = erro;
+        erro.errorCode = e.getErrorCode();
+        erro.errorState = e.getSQLState();
+        erro.errorMessage = e.getMessage();
+        sqlResult.sqlError = erro;
     }
 
     public String getDatabase() {

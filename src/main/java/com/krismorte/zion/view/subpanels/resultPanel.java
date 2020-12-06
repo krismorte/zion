@@ -73,15 +73,15 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
         switch (gridOption) {
             case STATUS_GRID:
                 SQLResult statusResult = new SQLResult();
-                statusResult.coluna = statusGridColumns;
-                statusResult.linhas = statusGridRows;
+                statusResult.columns = statusGridColumns;
+                statusResult.rows = statusGridRows;
                 return statusResult;
             case INDIVIDUAL_GRID:
                 return servers.get(0).getSqlResult();
             case CROSS_GRID:
                 SQLResult gridResult = new SQLResult();
-                gridResult.coluna = crossGridColumns;
-                gridResult.linhas = crossGridRows;
+                gridResult.columns = crossGridColumns;
+                gridResult.rows = crossGridRows;
                 return gridResult;
             default:
                 return null;
@@ -92,9 +92,9 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
         int totalColunas = 0;
         Server srvComMaisColunas = null;
         for (Server s : servers) {
-            if (s.getSqlResult().linhas != null) {
-                if (totalColunas < s.getSqlResult().coluna.length) {
-                    totalColunas = s.getSqlResult().coluna.length;
+            if (s.getSqlResult().rows != null) {
+                if (totalColunas < s.getSqlResult().columns.length) {
+                    totalColunas = s.getSqlResult().columns.length;
                     srvComMaisColunas = s;
                 }
             }
@@ -105,7 +105,7 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
         crossGridColumns = new String[totalColunas];
         crossGridColumns[0] = getStringI18n("SERVER");
         for (int i = 1; i < crossGridColumns.length; i++) {
-            crossGridColumns[i] = srvComMaisColunas.getSqlResult().coluna[i - 1];
+            crossGridColumns[i] = srvComMaisColunas.getSqlResult().columns[i - 1];
         }
 
     }
@@ -113,8 +113,8 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
     private int totalLinhasCruzadas() {
         int total = 0;
         for (Server s : servers) {
-            if (s.getSqlResult().linhas != null) {
-                total += s.getSqlResult().linhas.length;
+            if (s.getSqlResult().rows != null) {
+                total += s.getSqlResult().rows.length;
             } else {
                 total += 1;
             }
@@ -124,13 +124,13 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
 
     private void mostraResultado() {
         //if (this.server != null) {       
-        if (servers.get(0).getSqlResult().sqlErro != null) {
-            exibeTexto(servers.get(0).getSqlResult().sqlErro.getRaisError());
+        if (servers.get(0).getSqlResult().sqlError != null) {
+            exibeTexto(servers.get(0).getSqlResult().sqlError.getRaisedError());
         } else {
-            if (servers.get(0).getSqlResult().eTexto) {
-                exibeTexto(servers.get(0).getSqlResult().texto);
+            if (servers.get(0).getSqlResult().isText) {
+                exibeTexto(servers.get(0).getSqlResult().text);
             } else {
-                exibeGrid(servers.get(0).getSqlResult().coluna, servers.get(0).getSqlResult().linhas);
+                exibeGrid(servers.get(0).getSqlResult().columns, servers.get(0).getSqlResult().rows);
             }
         }
 //        } else {
@@ -164,24 +164,24 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
         if (servers.size() > 0) {
 
             for (int i = 0; i < servers.size(); i++) {
-                if (servers.get(i).getSqlResult().linhas == null) {
+                if (servers.get(i).getSqlResult().rows == null) {
                     crossGridRows[linha][0] = servers.get(i).getHost();
 
                     for (int z = 0; z < crossGridColumns.length - 1; z++) {
-                        crossGridRows[linha][z + 1] = getStringI18n("ERROR") + ": " + servers.get(i).getSqlResult().sqlErro.getRaisError();
+                        crossGridRows[linha][z + 1] = getStringI18n("ERROR") + ": " + servers.get(i).getSqlResult().sqlError.getRaisedError();
                     }
                     linha++;
                 } else {
 
-                    for (int w = 0; w < servers.get(i).getSqlResult().linhas.length; w++) {
+                    for (int w = 0; w < servers.get(i).getSqlResult().rows.length; w++) {
 
-                        int colunasResultado = ((Object[]) servers.get(i).getSqlResult().linhas[w]).length;
+                        int colunasResultado = ((Object[]) servers.get(i).getSqlResult().rows[w]).length;
                         crossGridRows[linha][0] = servers.get(i).getHost();
                         for (int z = 0; z < crossGridColumns.length - 1; z++) {
                             if (z >= colunasResultado) {
                                 crossGridRows[linha][z + 1] = getStringI18n("NO_COLUMN_DEFINED");
                             } else {
-                                crossGridRows[linha][z + 1] = servers.get(i).getSqlResult().linhas[w][z] != null ? servers.get(i).getSqlResult().linhas[w][z].toString() : "";
+                                crossGridRows[linha][z + 1] = servers.get(i).getSqlResult().rows[w][z] != null ? servers.get(i).getSqlResult().rows[w][z].toString() : "";
                             }
                         }
                         linha++;
@@ -200,9 +200,9 @@ public class resultPanel extends javax.swing.JPanel implements Internationalized
 
         if (sqlresultado == null) {
             resultadoTxt = getStringI18n("RUNNING") + "...";
-        } else if (sqlresultado.sqlErro != null) {
-            resultadoTxt = "Erro: " + sqlresultado.sqlErro.getRaisError();
-        } else if (sqlresultado.linhas == null) {
+        } else if (sqlresultado.sqlError != null) {
+            resultadoTxt = "Erro: " + sqlresultado.sqlError.getRaisedError();
+        } else if (sqlresultado.rows == null) {
             resultadoTxt = getStringI18n("RUNNING") + "...";
         } else {
             resultadoTxt = getStringI18n("SUCCESS");

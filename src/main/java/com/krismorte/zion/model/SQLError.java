@@ -9,12 +9,12 @@ package com.krismorte.zion.model;
  */
 public class SQLError {
 
-    public int codigoErro;
-    public String estadoErro;
-    public String msgErro;
+    public int errorCode;
+    public String errorState;
+    public String errorMessage;
 
-    public String getRaisError() {
-        return "" + codigoErro + " " + estadoErro + msgErro;
+    public String getRaisedError() {
+        return "" + errorCode + " " + errorState + errorMessage;
         //Msg 50000, Level 16, State 1, Line 1
     }
 }

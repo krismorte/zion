@@ -7,7 +7,6 @@ import com.krismorte.zion.model.SupportedDatabases;
 import com.krismorte.zion.service.ConnectionFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.testcontainers.containers.MSSQLServerContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -45,11 +44,11 @@ class PostgresTest extends DefaultOperationTest{
     void runCommand() throws Exception{
         postgreSQL =  new Postgres(connectionFactory,serverCredential);
         SQLResult sqlResult = postgreSQL.runCommand("selet 1");
-        assertNull(sqlResult.coluna);
-        assertNotNull(sqlResult.sqlErro);
+        assertNull(sqlResult.columns);
+        assertNotNull(sqlResult.sqlError);
         sqlResult = postgreSQL.runCommand("select current_database()");
-        assertNotNull(sqlResult.coluna);
-        assertEquals(1,sqlResult.linhas.length);
+        assertNotNull(sqlResult.columns);
+        assertEquals(1,sqlResult.rows.length);
     }
 
     @Test
@@ -57,12 +56,12 @@ class PostgresTest extends DefaultOperationTest{
         postgreSQL =  new Postgres(connectionFactory,serverCredential);
         SQLResult sqlResult = postgreSQL.runCommand("create role "+userTest+" with login password '45jk45uiJ'");
         sqlResult = postgreSQL.runCommand("SELECT count(1) FROM pg_catalog.pg_user where usename ='"+userTest+"'");
-        assertEquals("1",sqlResult.linhas[0][0]);
+        assertEquals("1",sqlResult.rows[0][0]);
 
 
         sqlResult = postgreSQL.runCommand("drop role "+userTest);
         sqlResult = postgreSQL.runCommand("SELECT count(1) FROM pg_catalog.pg_user where usename ='"+userTest+"'");
-        assertEquals("0",sqlResult.linhas[0][0]);
+        assertEquals("0",sqlResult.rows[0][0]);
     }
 
     @Test

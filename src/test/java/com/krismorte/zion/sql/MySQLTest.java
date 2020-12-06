@@ -38,11 +38,11 @@ class MySQLTest extends DefaultOperationTest{
     void runCommand() throws Exception{
         mySQL =  new MySQL(connectionFactory,serverCredential);
         SQLResult sqlResult = mySQL.runCommand("selet 1");
-        assertNull(sqlResult.coluna);
-        assertNotNull(sqlResult.sqlErro);
+        assertNull(sqlResult.columns);
+        assertNotNull(sqlResult.sqlError);
         sqlResult = mySQL.runCommand("SELECT schema_name FROM information_schema.schemata where schema_name in ('mysql','information_schema')");
-        assertNotNull(sqlResult.coluna);
-        assertEquals(2,sqlResult.linhas.length);
+        assertNotNull(sqlResult.columns);
+        assertEquals(2,sqlResult.rows.length);
 
     }
 
@@ -51,12 +51,12 @@ class MySQLTest extends DefaultOperationTest{
         mySQL =  new MySQL(connectionFactory,serverCredential);
         SQLResult sqlResult = mySQL.runCommand("create user "+userTest+" identified by '45jk45uiJ'");
         sqlResult = mySQL.runCommand("SELECT count(1) FROM mysql.user where user ='"+userTest+"'");
-        assertEquals("1",sqlResult.linhas[0][0]);
+        assertEquals("1",sqlResult.rows[0][0]);
 
 
         sqlResult = mySQL.runCommand("drop user "+userTest);
         sqlResult = mySQL.runCommand("SELECT count(1) FROM mysql.user where user ='"+userTest+"'");
-        assertEquals("0",sqlResult.linhas[0][0]);
+        assertEquals("0",sqlResult.rows[0][0]);
     }
 
     @Test

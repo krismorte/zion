@@ -10,9 +10,9 @@ package com.krismorte.zion.model;
  */
 public class SQLResult {
 
-    public String[] coluna;
-    public Object[][] linhas;
-    public boolean eTexto = false;
-    public String texto = "";
-    public SQLError sqlErro = null;
+    public String[] columns;
+    public Object[][] rows;
+    public boolean isText = false;
+    public String text = "";
+    public SQLError sqlError = null;
 }

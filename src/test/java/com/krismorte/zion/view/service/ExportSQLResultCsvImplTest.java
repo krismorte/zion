@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,11 +19,11 @@ class ExportSQLResultCsvImplTest {
     static void settup(){
         exportSQLResultCsv = new ExportSQLResultCsvImpl();
         String[] tempCol={"Teste","Teste"};
-        sqlResult.coluna =tempCol;
-        sqlResult.linhas = new Object[1][tempCol.length];
-        for(int i=0;i<sqlResult.linhas.length;i++){
-            sqlResult.linhas[i][0] = "row"+i+",col0";
-            sqlResult.linhas[i][1] = "row"+i+",col1";
+        sqlResult.columns =tempCol;
+        sqlResult.rows = new Object[1][tempCol.length];
+        for(int i = 0; i<sqlResult.rows.length; i++){
+            sqlResult.rows[i][0] = "row"+i+",col0";
+            sqlResult.rows[i][1] = "row"+i+",col1";
         }
     }
 

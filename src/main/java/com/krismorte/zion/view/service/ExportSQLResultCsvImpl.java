@@ -19,8 +19,8 @@ public class ExportSQLResultCsvImpl implements ExportSQLResult {
 
     @Override
     public File export(String filePath, SQLResult ssqlResult) throws Exception {
-        String content = String.join(";", ssqlResult.coluna).concat("\r\n");
-        for (Object[] r : ssqlResult.linhas) {
+        String content = String.join(";", ssqlResult.columns).concat("\r\n");
+        for (Object[] r : ssqlResult.rows) {
             String[] rowsArray = Arrays.copyOf(r, r.length, String[].class);
             content += String.join(";", rowsArray).concat("\r\n");
         }
