@@ -445,14 +445,14 @@ public class operationPanel extends javax.swing.JPanel implements Internationali
         if (radGridStatus.isSelected()) {
             buildStatusGrid();
         }
-        panelScript.iniciaContadores(selectedServers.size(), 0, 0);
+        panelScript.initCounter(selectedServers.size(), 0, 0);
     }
     
     public void exibeResultado(Server srv) {
         if (srv.getSqlResult().sqlError != null) {//  ERRO!
-            panelScript.atualizaContadorNegativo();
+            panelScript.updateFailCounter();
         } else {
-            panelScript.atualizaContadorPositivo();
+            panelScript.updateSucessCounter();
         }
         if (radAbas.isSelected()) {
             exibeResultadoPorAba(srv);

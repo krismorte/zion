@@ -13,9 +13,9 @@ import com.krismorte.zion.view.operationPanel;
  */
 public class scriptPanel extends javax.swing.JPanel{
 
-    protected int valorInicial;
-    protected int valorSuc;
-    protected int valorFal;
+    protected int initialValue;
+    protected int sucessValue;
+    protected int failValue;
     protected operationPanel panel;
 
     /**
@@ -37,28 +37,28 @@ public class scriptPanel extends javax.swing.JPanel{
         }
     }
 
-    public void iniciaContadores(int valorInicial, int valorSuc, int valorFal) {
-        this.valorInicial = valorInicial;
-        this.valorSuc = valorSuc;
-        this.valorFal = valorFal;
-        panel.setTotal("" + valorInicial);
-        panel.setWainting("" + valorInicial);
-        panel.setFail("" + valorFal);
-        panel.setSuccess("" + valorSuc);
+    public void initCounter(int initialValue, int sucessValue, int failValue) {
+        this.initialValue = initialValue;
+        this.sucessValue = sucessValue;
+        this.failValue = failValue;
+        panel.setTotal("" + initialValue);
+        panel.setWainting("" + initialValue);
+        panel.setFail("" + failValue);
+        panel.setSuccess("" + sucessValue);
     }
 
-    public void atualizaContadorPositivo() {
-        valorSuc++;
-        valorInicial--;
-        panel.setWainting("" + valorInicial);
-        panel.setSuccess("" + valorSuc);
+    public void updateSucessCounter() {
+        sucessValue++;
+        initialValue--;
+        panel.setWainting("" + initialValue);
+        panel.setSuccess("" + sucessValue);
     }
 
-    public void atualizaContadorNegativo() {
-        valorFal++;
-        valorInicial--;
-        panel.setWainting("" + valorInicial);
-        panel.setFail("" + valorFal);
+    public void updateFailCounter() {
+        failValue++;
+        initialValue--;
+        panel.setWainting("" + initialValue);
+        panel.setFail("" + failValue);
     }
 
     public String getParallelism() {

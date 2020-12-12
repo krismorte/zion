@@ -12,8 +12,6 @@ package com.krismorte.zion.view.subpanels;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import com.krismorte.zion.util.Tabela;
 import com.krismorte.zion.view.operationPanel;
 import java.util.Locale;
@@ -26,12 +24,12 @@ import java.util.ResourceBundle;
 public class listScriptPanel extends scriptPanel {
 
     private ResourceBundle resourceBundle = ResourceBundle.getBundle("SystemMessages", Locale.getDefault());
-    private String[] colunas;
-    private Object[][] linhas;
-    public static int valorInicial;
-    public static int valorSuc;
-    public static int valorFal;
-    private List<File> arquivos = new ArrayList<File>();
+    private String[] columns;
+    private Object[][] rows;
+    public static int initialValue;
+    public static int sucessValue;
+    public static int failValue;
+    private List<File> files = new ArrayList<File>();
 
     /**
      * Creates new form panelScriptLivre
@@ -39,74 +37,42 @@ public class listScriptPanel extends scriptPanel {
     public listScriptPanel(operationPanel panel) {
         super(panel);
         initComponents();
-        String[] colunasTMP = {resourceBundle.getString("ORDER"), resourceBundle.getString("STATUS")};
-        colunas = colunasTMP;
-        //txtParalelismo.setText("" + Parametros.parallelism);
-        atualizaTabela();
+        String[] colTMP = {resourceBundle.getString("ORDER"), resourceBundle.getString("STATUS")};
+        columns = colTMP;
+        refreshTable();
     }
 
-    /*public boolean verificaParalelismo() {
-        try {
-            int par = Integer.parseInt(txtParalelismo.getText());
-            return Parametros.isValidParallelismValue(par);
-        } catch (NumberFormatException e) {
-            txtParalelismo.setText("" + Parametros.parallelism);
-            return false;
-        }
-    }*/
+
 
    public String getParallelism() {
         return panel.getParallelism();
     }
-/*
-    public void setParalelismo(String script) {
-        txtParalelismo.setText(script);
+
+
+ public void initCounter(int initialValue, int sucessValue, int failValue) {
+        this.initialValue = initialValue;
+        this.sucessValue = sucessValue;
+        this.failValue = failValue;
+        panel.setTotal("" + initialValue);
+        panel.setWainting("" + initialValue);
+        panel.setFail("" + failValue);
+        panel.setSuccess("" + sucessValue);
+
     }
 
-    public void setAguardando(String script) {
-        txtAguardando.setText(script);
+    public void updateSucessCounter() {
+        sucessValue++;
+        initialValue--;
+        panel.setWainting("" + initialValue);
+        panel.setSuccess("" + sucessValue);
+
     }
 
-    public void setSucesso(String script) {
-        txtSucesso.setText(script);
-    }
-
-    public void setFalha(String script) {
-        txtFalha.setText(script);
-    }*/
-
- public void iniciaContadores(int valorInicial, int valorSuc, int valorFal) {
-        this.valorInicial = valorInicial;
-        this.valorSuc = valorSuc;
-        this.valorFal = valorFal;
-        panel.setTotal("" + valorInicial);
-        panel.setWainting("" + valorInicial);
-        panel.setFail("" + valorFal);
-        panel.setSuccess("" + valorSuc);
-        //txtTotal.setText();
-        //txtAguardando.setText();
-        //txtFalha.setText("" + valorFal);
-        //txtSucesso.setText("" + valorSuc);
-    }
-
-    public void atualizaContadorPositivo() {
-        valorSuc++;
-        valorInicial--;
-        panel.setWainting("" + valorInicial);
-        panel.setSuccess("" + valorSuc);
-        //txtAguardando.setText("" + valorInicial);
-        //txtFalha.setText("" + valorFal);
-        //txtSucesso.setText("" + valorSuc);
-    }
-
-    public void atualizaContadorNegativo() {
-        valorFal++;
-        valorInicial--;
-        //txtAguardando.setText("" + valorInicial);
-        //txtFalha.setText("" + valorFal);
-        panel.setWainting("" + valorInicial);
-        panel.setFail("" + valorFal);
-        // txtSucesso.setText("" + valorSuc);
+    public void updateFailCounter() {
+        failValue++;
+        initialValue--;
+        panel.setWainting("" + initialValue);
+        panel.setFail("" + failValue);
     }
 
     /**
@@ -146,7 +112,7 @@ public class listScriptPanel extends scriptPanel {
             .addGap(0, 144, Short.MAX_VALUE)
         );
 
-        jButton2.setText("remover arquivos");
+        jButton2.setText(resourceBundle.getString("RM_FILES")+":");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -163,7 +129,7 @@ public class listScriptPanel extends scriptPanel {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtArquivo, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                        .addComponent(txtArquivo, javax.swing.GroupLayout.DEFAULT_SIZE, 555, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,47 +153,14 @@ public class listScriptPanel extends scriptPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//        try {
-//            JFileChooser fc = null;
-//            String exts[] = {"TXT", "SQL"};
-//            if (fc == null) {
-//                fc = new JFileChooser();
-//                fc.addChoosableFileFilter(new ArquivosFiltro(exts));
-//                fc.setMultiSelectionEnabled(true);
-//                fc.setDialogTitle("Procurar");
-//            }
-//            int returnVal = fc.showDialog(this, "Escolher");
-//            if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                File[] arquivosTmp = fc.getSelectedFiles();
-//                String caminhoArquivo = "";
-//                if (arquivosTmp.length == 1) {
-//                    caminhoArquivo = arquivosTmp[0].getAbsolutePath();
-//                    arquivos.add(arquivosTmp[0]);
-//                } else {
-//                    for (int i = 0; i < arquivosTmp.length; i++) {
-//                        if (i == 0) {
-//                            caminhoArquivo += arquivosTmp[i].getName();
-//                        } else {
-//                            caminhoArquivo += ", " + arquivosTmp[i].getName();
-//                        }
-//                        arquivos.add(arquivosTmp[i]);
-//                    }
-//                }
-//                atualizaTabela();
-//                txtArquivo.setText(caminhoArquivo);
-//            } else {
-//            }
-//            fc.setSelectedFile(null);
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(this, "Falha na busca da imagem. " + e.getMessage());
-//        }
+
 
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        arquivos.clear();
-        atualizaTabela();
+        files.clear();
+        refreshTable();
         txtArquivo.setText("");
     }//GEN-LAST:event_jButton2ActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -238,18 +171,18 @@ public class listScriptPanel extends scriptPanel {
     private javax.swing.JTextField txtArquivo;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizaTabela() {
-        preencheMatrizLinhas();
-        Tabela.preencheTabela(panelResultados, colunas, linhas);
+    private void refreshTable() {
+        fulfilRows();
+        Tabela.preencheTabela(panelResultados, columns, rows);
     }
 
-    public void preencheMatrizLinhas() {
-        linhas = new Object[arquivos.size()][colunas.length];
-        if (arquivos.size() > 0) {
-            for (int i = 0; i < arquivos.size(); i++) {
-                for (int z = 0; z < colunas.length; z++) {
-                    Object[][] obj = {{i, arquivos.get(i).getAbsoluteFile()}};
-                    linhas[i][z] = obj[0][z];//Rows are dynamics
+    public void fulfilRows() {
+        rows = new Object[files.size()][columns.length];
+        if (files.size() > 0) {
+            for (int i = 0; i < files.size(); i++) {
+                for (int z = 0; z < columns.length; z++) {
+                    Object[][] obj = {{i, files.get(i).getAbsoluteFile()}};
+                    rows[i][z] = obj[0][z];//Rows are dynamics
                 }
             }
         }

@@ -54,10 +54,10 @@ public class EditorSQL extends JTextPane {
                     for (SQLLibrary b : library) {
                         // if (text.substring(wordL, wordR).matches("(\\W)*(private|public|protected)")) {
                         if (text.substring(wordL, wordR).toUpperCase().matches("(\\W)*(" + b.toStringRegexSearch() + ")")) {
-                            setCharacterAttributes(wordL+1, wordR - wordL, getAtrib(b.getColor()), false);
+                            setCharacterAttributes(wordL+1, wordR - wordL, getAttrib(b.getColor()), false);
                             break;
                         } else {
-                            setCharacterAttributes(wordL+1, wordR - wordL, getAtrib(Color.black), false);
+                            setCharacterAttributes(wordL+1, wordR - wordL, getAttrib(Color.black), false);
                         }                        
                     }
                     wordL = wordR;
@@ -77,15 +77,15 @@ public class EditorSQL extends JTextPane {
             int after = findFirstNonWordChar(text, offs);
             for (SQLLibrary b : library) {
                 if (text.substring(before, after).toUpperCase().matches("(\\W)*(" + b.toStringRegexSearch() + ")")) {
-                    setCharacterAttributes(before+1, after - before, getAtrib(b.getColor()), false);
+                    setCharacterAttributes(before+1, after - before, getAttrib(b.getColor()), false);
                 } else {
-                    setCharacterAttributes(before+1, after - before, getAtrib(Color.black), false);
+                    setCharacterAttributes(before+1, after - before, getAttrib(Color.black), false);
                 }
             }
         }
     };
 
-    private AttributeSet getAtrib(Color c) {
+    private AttributeSet getAttrib(Color c) {
         StyleContext cont = StyleContext.getDefaultStyleContext();
         AttributeSet attr = cont.addAttribute(cont.getEmptySet(), StyleConstants.Foreground, c);
         return attr;
